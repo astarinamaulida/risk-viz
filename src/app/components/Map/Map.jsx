@@ -108,12 +108,11 @@ export function Map() {
   useEffect(() => {
     if (data.length > 0) {
       const filteredData = data.filter(
-        (asset) => getDecade(asset["Year"]) === decade
+        (asset) => getDecade(asset["Year"]) === selectedDecade
       );
       setFilteredData(filteredData);
-      console.log({ filteredData });
     }
-  }, [data, decade]);
+  }, [data, selectedDecade]);
 
   return (
     <div className="map-container">
