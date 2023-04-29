@@ -5,6 +5,8 @@ export function Table({ selectedDecade, filteredData }) {
   const [tableData, setTableData] = useState([]);
   const [sorting, setSorting] = useState({ column: null, direction: null });
   const [hoveredColumn, setHoveredColumn] = useState(null);
+  const [selectedAsset, setSelectedAsset] = useState("All");
+  const [selectedCategory, setSelectedCategory] = useState("All");
 
   useEffect(() => {
     const decadeData = filteredData.filter(
@@ -53,9 +55,50 @@ export function Table({ selectedDecade, filteredData }) {
     setHoveredColumn(null);
   };
 
+  const handleAssetFilter = (event) => {
+    setSelectedAsset(event.target.value);
+  };
+
+  const handleCategoryFilter = (event) => {
+    setSelectedCategory(event.target.value);
+  };
+
+  const decadeData = filteredData.filter(
+    (asset) =>
+      Math.floor(new Date(asset["Year"]).getFullYear() / 10) * 10 ===
+        selectedDecade &&
+      (selectedAsset === "All" || asset["Asset Name"] === selectedAsset) &&
+      (selectedCategory === "All" ||
+        asset["Business Category"] === selectedCategory)
+  );
+
   return (
     <div className="table-container">
       <h3>Table Data for {selectedDecade}s</h3>
+      <select value={selectedAsset} onChange={handleAssetFilter}>
+        <option value="All">All Assets</option>
+        {filteredData
+          .map((asset) => asset["Asset Name"])
+          .filter((value, index, self) => self.indexOf(value) === index)
+          .map((asset) => (
+            <option key={asset} value={asset}>
+              {asset}
+            </option>
+          ))}
+      </select>
+
+      <select value={selectedCategory} onChange={handleCategoryFilter}>
+        <option value="All">All Categories</option>
+        {filteredData
+          .map((asset) => asset["Business Category"])
+          .filter((value, index, self) => self.indexOf(value) === index)
+          .map((category) => (
+            <option key={category} value={category}>
+              {category}
+            </option>
+          ))}
+      </select>
+
       <table>
         <thead>
           <tr>
@@ -103,7 +146,7 @@ export function Table({ selectedDecade, filteredData }) {
           </tr>
         </thead>
         <tbody>
-          {tableData.map((asset, index) => (
+          {decadeData.map((asset, index) => (
             <tr key={`${asset["Asset Name"]}-${index}`}>
               <td>{asset["Asset Name"]}</td>
               <td>{asset["Business Category"]}</td>
@@ -116,7 +159,7 @@ export function Table({ selectedDecade, filteredData }) {
       </table>
       <style jsx>{`
         .table-container {
-          width: 80%;
+          width: 100%;
           margin: auto;
         }
         table {
