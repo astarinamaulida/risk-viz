@@ -130,7 +130,7 @@ export function Table({ selectedDecade, filteredData }) {
             <th
               onClick={() => sortTable("Risk Factors")}
               onMouseEnter={() => handleMouseEnter("Risk Factors")}
-              onMouseLeave={() => handleMouseLeave("Risk Factors")}
+              onMouseLeave={() => handleMouseLeave("")}
             >
               Risk Factors {hoveredColumn === "Risk Factors" && <FaCaretDown />}
               {getSortingDirection("Risk Factors")}
