@@ -115,7 +115,7 @@ export function Table({ selectedDecade, filteredData }) {
               onMouseEnter={() => handleMouseEnter("Business Category")}
               onMouseLeave={() => handleMouseLeave()}
             >
-              Business Category{" "}
+              Business Category
               {hoveredColumn === "Business Category" && <FaCaretDown />}
               {getSortingDirection("Business Category")}
             </th>
@@ -130,7 +130,7 @@ export function Table({ selectedDecade, filteredData }) {
             <th
               onClick={() => sortTable("Risk Factors")}
               onMouseEnter={() => handleMouseEnter("Risk Factors")}
-              onMouseLeave={() => handleMouseLeave("")}
+              onMouseLeave={() => handleMouseLeave()}
             >
               Risk Factors {hoveredColumn === "Risk Factors" && <FaCaretDown />}
               {getSortingDirection("Risk Factors")}
