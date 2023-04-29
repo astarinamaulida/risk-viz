@@ -1,8 +1,10 @@
 import { useState, useEffect } from "react";
+import { FaCaretUp, FaCaretDown } from "react-icons/fa";
 
 export function Table({ selectedDecade, filteredData }) {
   const [tableData, setTableData] = useState([]);
   const [sorting, setSorting] = useState({ column: null, direction: null });
+  const [hoveredColumn, setHoveredColumn] = useState(null);
 
   useEffect(() => {
     const decadeData = filteredData.filter(
@@ -36,19 +38,68 @@ export function Table({ selectedDecade, filteredData }) {
     setTableData(sortedData);
   };
 
+  const getSortingDirection = (column) => {
+    if (sorting.column === column) {
+      return sorting.direction === "asc" ? <FaCaretUp /> : <FaCaretDown />;
+    }
+    return null;
+  };
+
+  const handleMouseEnter = (column) => {
+    setHoveredColumn(column);
+  };
+
+  const handleMouseLeave = () => {
+    setHoveredColumn(null);
+  };
+
   return (
     <div className="table-container">
       <h3>Table Data for {selectedDecade}s</h3>
       <table>
         <thead>
           <tr>
-            <th onClick={() => sortTable("Asset Name")}>Asset Name</th>
-            <th onClick={() => sortTable("Business Category")}>
-              Business Category
+            <th
+              onClick={() => sortTable("Asset Name")}
+              onMouseEnter={() => handleMouseEnter("Asset Name")}
+              onMouseLeave={() => handleMouseLeave()}
+            >
+              Asset Name {hoveredColumn === "Asset Name" && <FaCaretDown />}
+              {getSortingDirection("Asset Name")}
             </th>
-            <th onClick={() => sortTable("Risk Rating")}>Risk Rating</th>
-            <th onClick={() => sortTable("Risk Factors")}>Risk Factors</th>
-            <th onClick={() => sortTable("Year")}>Year</th>
+            <th
+              onClick={() => sortTable("Business Category")}
+              onMouseEnter={() => handleMouseEnter("Business Category")}
+              onMouseLeave={() => handleMouseLeave()}
+            >
+              Business Category{" "}
+              {hoveredColumn === "Business Category" && <FaCaretDown />}
+              {getSortingDirection("Business Category")}
+            </th>
+            <th
+              onClick={() => sortTable("Risk Rating")}
+              onMouseEnter={() => handleMouseEnter("Risk Rating")}
+              onMouseLeave={() => handleMouseLeave()}
+            >
+              Risk Rating {hoveredColumn === "Risk Rating" && <FaCaretDown />}
+              {getSortingDirection("Risk Rating")}
+            </th>
+            <th
+              onClick={() => sortTable("Risk Factors")}
+              onMouseEnter={() => handleMouseEnter("Risk Factors")}
+              onMouseLeave={() => handleMouseLeave("Risk Factors")}
+            >
+              Risk Factors {hoveredColumn === "Risk Factors" && <FaCaretDown />}
+              {getSortingDirection("Risk Factors")}
+            </th>
+            <th
+              onClick={() => sortTable("Year")}
+              onMouseEnter={() => handleMouseEnter("Year")}
+              onMouseLeave={() => handleMouseLeave()}
+            >
+              Year {hoveredColumn === "Year" && <FaCaretDown />}
+              {getSortingDirection("Year")}
+            </th>
           </tr>
         </thead>
         <tbody>
@@ -80,7 +131,7 @@ export function Table({ selectedDecade, filteredData }) {
           border-bottom: 1px solid #ddd;
         }
         th {
-          background-color: #94B8D0;
+          background-color: #94b8d0;
           color: white;
         }
         tr:hover {
@@ -90,4 +141,3 @@ export function Table({ selectedDecade, filteredData }) {
     </div>
   );
 }
-
