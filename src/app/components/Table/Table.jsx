@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 
 export function Table({ selectedDecade, filteredData }) {
   const [tableData, setTableData] = useState([]);
+  const [sorting, setSorting] = useState({ column: null, direction: null });
 
   useEffect(() => {
     const decadeData = filteredData.filter(
@@ -16,16 +17,38 @@ export function Table({ selectedDecade, filteredData }) {
     return str.replace(/[^a-zA-Z ]/g, "").replace(/\s+/g, ", ");
   };
 
+  const sortTable = (column) => {
+    let direction = "asc";
+    if (sorting.column === column && sorting.direction === "asc") {
+      direction = "desc";
+    }
+    setSorting({ column, direction });
+
+    const sortedData = [...tableData].sort((a, b) => {
+      if (a[column] < b[column]) {
+        return direction === "asc" ? -1 : 1;
+      }
+      if (a[column] > b[column]) {
+        return direction === "asc" ? 1 : -1;
+      }
+      return 0;
+    });
+    setTableData(sortedData);
+  };
+
   return (
     <div className="table-container">
       <h3>Table Data for {selectedDecade}s</h3>
       <table>
         <thead>
           <tr>
-            <th>Asset Name</th>
-            <th>Business Category</th>
-            <th>Risk Rating</th>
-            <th>Risk Factors</th>
+            <th onClick={() => sortTable("Asset Name")}>Asset Name</th>
+            <th onClick={() => sortTable("Business Category")}>
+              Business Category
+            </th>
+            <th onClick={() => sortTable("Risk Rating")}>Risk Rating</th>
+            <th onClick={() => sortTable("Risk Factors")}>Risk Factors</th>
+            <th onClick={() => sortTable("Year")}>Year</th>
           </tr>
         </thead>
         <tbody>
@@ -35,6 +58,7 @@ export function Table({ selectedDecade, filteredData }) {
               <td>{asset["Business Category"]}</td>
               <td>{asset["Risk Rating"]}</td>
               <td>{extractWords(asset["Risk Factors"])}</td>
+              <td>{asset["Year"]}</td>
             </tr>
           ))}
         </tbody>
@@ -66,3 +90,4 @@ export function Table({ selectedDecade, filteredData }) {
     </div>
   );
 }
+
