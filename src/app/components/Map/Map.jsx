@@ -116,6 +116,15 @@ export function Map() {
 
   return (
     <div className="map-container">
+      <h3>Select Year</h3>
+      <Slider
+        value={selectedDecade}
+        onChange={handleSliderChange}
+        min={2030}
+        max={2070}
+        step={10}
+        valueLabelDisplay="auto"
+      />
       <LoadScript googleMapsApiKey={process.env.REACT_APP_GOOGLE_KEY}>
         <GoogleMap
           mapContainerStyle={mapStyles}
@@ -163,16 +172,6 @@ export function Map() {
             }
           </MarkerClusterer>
         </GoogleMap>
-
-        <Slider
-          value={selectedDecade}
-          onChange={handleSliderChange}
-          min={2030}
-          max={2070}
-          step={10}
-          valueLabelDisplay="auto"
-        />
-
         <style jsx>{`
           .map-container {
             height: 100vh;
