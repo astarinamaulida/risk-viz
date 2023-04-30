@@ -7,6 +7,8 @@ export function Table({ selectedDecade, filteredData }) {
   const [hoveredColumn, setHoveredColumn] = useState(null);
   const [selectedAsset, setSelectedAsset] = useState("All");
   const [selectedCategory, setSelectedCategory] = useState("All");
+  const [currentPage, setCurrentPage] = useState(1);
+  const [itemsPerPage, setItemsPerPage] = useState(10);
 
   useEffect(() => {
     const decadeData = filteredData.filter(
@@ -57,11 +59,14 @@ export function Table({ selectedDecade, filteredData }) {
 
   const handleAssetFilter = (event) => {
     setSelectedAsset(event.target.value);
+    setCurrentPage(1);
   };
-
+  
   const handleCategoryFilter = (event) => {
     setSelectedCategory(event.target.value);
+    setCurrentPage(1);
   };
+  
 
   const decadeData = filteredData.filter(
     (asset) =>
@@ -71,6 +76,14 @@ export function Table({ selectedDecade, filteredData }) {
       (selectedCategory === "All" ||
         asset["Business Category"] === selectedCategory)
   );
+
+  const indexOfLastItem = currentPage * itemsPerPage;
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  const currentData = decadeData.slice(indexOfFirstItem, indexOfLastItem);
+
+  const paginate = (pageNumber) => {
+    setCurrentPage(pageNumber);
+  };
 
   return (
     <div className="table-container">
@@ -146,7 +159,7 @@ export function Table({ selectedDecade, filteredData }) {
           </tr>
         </thead>
         <tbody>
-          {decadeData.map((asset, index) => (
+          {currentData.map((asset, index) => (
             <tr key={`${asset["Asset Name"]}-${index}`}>
               <td>{asset["Asset Name"]}</td>
               <td>{asset["Business Category"]}</td>
@@ -157,6 +170,28 @@ export function Table({ selectedDecade, filteredData }) {
           ))}
         </tbody>
       </table>
+      <div className="pagination">
+        <div>
+          <button
+            onClick={() => paginate(currentPage - 1)}
+            disabled={currentPage === 1}
+          >
+            {"<<"}
+          </button>
+          <span>
+            Page {currentPage} of {Math.ceil(decadeData.length / itemsPerPage)}
+          </span>
+          <button
+            onClick={() => paginate(currentPage + 1)}
+            disabled={
+              currentPage === Math.ceil(decadeData.length / itemsPerPage)
+            }
+          >
+            {">>"}
+          </button>
+        </div>
+      </div>
+
       <style jsx>{`
         .table-container {
           width: 100%;
