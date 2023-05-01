@@ -6,59 +6,59 @@ Chart.register(...registerables);
 
 export function Graph({ data }) {
   const [chartData, setChartData] = useState({});
-  const [filter, setFilter] = useState("Location");
+  const [location, setLocation] = useState("");
+  const [asset, setAsset] = useState("");
+  const [businessCategory, setBusinessCategory] = useState("");
 
   useEffect(() => {
     if (!data) return;
 
     const filterData = () => {
       let filteredData = {};
-      switch (filter) {
-        case "Location":
-          filteredData = data.reduce((acc, cur) => {
-            const key = `${cur.Lat}-${cur.Long}`;
-            acc[key] = acc[key] || { labels: [], data: [] };
-            acc[key].labels.push(cur.Year);
-            acc[key].data.push(cur["Risk Rating"]);
-            return acc;
-          }, {});
-          break;
-        case "Asset":
-          filteredData = data.reduce((acc, cur) => {
-            const key = cur["Asset Name"];
-            acc[key] = acc[key] || { labels: [], data: [] };
-            acc[key].labels.push(cur.Year);
-            acc[key].data.push(cur["Risk Rating"]);
-            return acc;
-          }, {});
-          break;
-        case "Business Category":
-          filteredData = data.reduce((acc, cur) => {
-            const key = cur["Business Category"];
-            acc[key] = acc[key] || { labels: [], data: [] };
-            acc[key].labels.push(cur.Year);
-            acc[key].data.push(cur["Risk Rating"]);
-            return acc;
-          }, {});
-          break;
-        default:
-          break;
+      if (location) {
+        filteredData = data.reduce((acc, cur) => {
+          if (`${cur.Lat}-${cur.Long}` === location) {
+            acc[cur.Year] = acc[cur.Year] || [];
+            acc[cur.Year].push(cur["Risk Rating"]);
+          }
+          return acc;
+        }, {});
+      } else if (asset) {
+        filteredData = data.reduce((acc, cur) => {
+          if (cur["Asset Name"] === asset) {
+            acc[cur.Year] = acc[cur.Year] || [];
+            acc[cur.Year].push(cur["Risk Rating"]);
+          }
+          return acc;
+        }, {});
+      } else if (businessCategory) {
+        filteredData = data.reduce((acc, cur) => {
+          if (cur["Business Category"] === businessCategory) {
+            acc[cur.Year] = acc[cur.Year] || [];
+            acc[cur.Year].push(cur["Risk Rating"]);
+          }
+          return acc;
+        }, {});
       }
       return filteredData;
     };
+    
     const filteredData = filterData();
     if (!filteredData) return;
     setChartData({
-      labels: Object.values(filteredData)[0]?.labels,
-      datasets: Object.entries(filteredData).map(([key, value]) => ({
-        label: key,
-        data: value.data,
-        borderColor: getRandomColor(),
-        borderWidth: 2,
-        fill: false,
-      })),
+      labels: Object.keys(filteredData).sort(),
+      datasets: [
+        {
+          label: "Risk Rating",
+          data: Object.keys(filteredData).sort().map(year => filteredData[year][0]),
+          borderColor: getRandomColor(),
+          borderWidth: 2,
+          fill: false,
+        },
+      ],
     });
-  }, [data, filter]);
+    
+  }, [data, location, asset, businessCategory]);
 
   const getRandomColor = () => {
     const letters = "0123456789ABCDEF";
@@ -72,11 +72,30 @@ export function Graph({ data }) {
   return (
     <div className="line-chart">
       <div className="chart-filters">
-        <button onClick={() => setFilter("Location")}>Location</button>
-        <button onClick={() => setFilter("Asset")}>Asset</button>
-        <button onClick={() => setFilter("Business Category")}>
-          Business Category
-        </button>
+        <label htmlFor="location">Location:</label>
+        <select id="location" value={location} onChange={(e) => setLocation(e.target.value)}>
+          <option value="">All</option>
+          {data && Array.from(new Set(data.map((d) => `${d.Lat}-${d.Long}`))).map((loc) => (
+            <option key={loc} value={loc}>{loc}</option>
+          ))}
+        </select>
+
+        <label htmlFor="asset">Asset Name:</label>
+        <select id="asset" value={asset} onChange={(e) => setAsset(e.target.value)}>
+          <option value="">All</option>
+          {data && Array.from(new Set(data.map((d) => d["Asset Name"]))).map((name) => (
+            <option key={name} value={name}>{name}</option>
+          ))}
+        </select>
+
+        <label htmlFor="business-category">Business Category:</label>
+        <select id="business-category" value={businessCategory} onChange={(e) => setBusinessCategory(e.target.value)}>
+          <option value = "">All</option>
+          {data && Array.from(new Set(data.map((d) => d["Business Category"]))).map((category) => (
+            <option key={category} value={category}>{category}</option>
+          ))}
+        </select>
+
       </div>
       {chartData && chartData.datasets && chartData.datasets.length > 0 && (
         <Line
