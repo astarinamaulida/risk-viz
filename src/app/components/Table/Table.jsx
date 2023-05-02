@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { Select, MenuItem, FormControl, InputLabel } from "@material-ui/core";
 import { FaCaretUp, FaCaretDown } from "react-icons/fa";
 
 export function Table({ selectedDecade, filteredData }) {
@@ -61,12 +62,11 @@ export function Table({ selectedDecade, filteredData }) {
     setSelectedAsset(event.target.value);
     setCurrentPage(1);
   };
-  
+
   const handleCategoryFilter = (event) => {
     setSelectedCategory(event.target.value);
     setCurrentPage(1);
   };
-  
 
   const decadeData = filteredData.filter(
     (asset) =>
@@ -88,29 +88,44 @@ export function Table({ selectedDecade, filteredData }) {
   return (
     <div className="table-container">
       <h3>Risk Data for {selectedDecade}s</h3>
-      <select value={selectedAsset} onChange={handleAssetFilter}>
-        <option value="All">All Assets</option>
-        {filteredData
-          .map((asset) => asset["Asset Name"])
-          .filter((value, index, self) => self.indexOf(value) === index)
-          .map((asset) => (
-            <option key={asset} value={asset}>
-              {asset}
-            </option>
-          ))}
-      </select>
-
-      <select value={selectedCategory} onChange={handleCategoryFilter}>
-        <option value="All">All Categories</option>
-        {filteredData
-          .map((asset) => asset["Business Category"])
-          .filter((value, index, self) => self.indexOf(value) === index)
-          .map((category) => (
-            <option key={category} value={category}>
-              {category}
-            </option>
-          ))}
-      </select>
+      <div className="selection">
+        <FormControl sx={{ m: 1, minWidth: 120 }} size="small">
+          <Select
+            value={selectedAsset}
+            onChange={handleAssetFilter}
+            variant="outlined"
+            margin="dense"
+          >
+            <MenuItem value="All">All Asset</MenuItem>
+            {filteredData
+              .map((asset) => asset["Asset Name"])
+              .filter((value, index, self) => self.indexOf(value) === index)
+              .map((asset) => (
+                <MenuItem key={asset} value={asset}>
+                  {asset}
+                </MenuItem>
+              ))}
+          </Select>
+        </FormControl>
+        <FormControl sx={{ m: 1, minWidth: 120 }} size="small">
+          <Select
+            value={selectedCategory}
+            onChange={handleCategoryFilter}
+            variant="outlined"
+            margin="dense"
+          >
+            <MenuItem value="All">All Categories</MenuItem>
+            {filteredData
+              .map((asset) => asset["Business Category"])
+              .filter((value, index, self) => self.indexOf(value) === index)
+              .map((category) => (
+                <MenuItem key={category} value={category}>
+                  {category}
+                </MenuItem>
+              ))}
+          </Select>
+        </FormControl>
+      </div>
 
       <table>
         <thead>
@@ -175,6 +190,7 @@ export function Table({ selectedDecade, filteredData }) {
           <button
             onClick={() => paginate(currentPage - 1)}
             disabled={currentPage === 1}
+            style={{ border: "none", margin: "5px", backgroundColor: "white" }}
           >
             {"<<"}
           </button>
@@ -186,6 +202,7 @@ export function Table({ selectedDecade, filteredData }) {
             disabled={
               currentPage === Math.ceil(decadeData.length / itemsPerPage)
             }
+            style={{ border: "none", margin: "5px", backgroundColor: "white" }}
           >
             {">>"}
           </button>
