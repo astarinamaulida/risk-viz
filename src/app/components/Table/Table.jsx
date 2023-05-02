@@ -87,7 +87,7 @@ export function Table({ selectedDecade, filteredData }) {
 
   return (
     <div className="table-container">
-      <h3>Table Data for {selectedDecade}s</h3>
+      <h3>Risk Data for {selectedDecade}s</h3>
       <select value={selectedAsset} onChange={handleAssetFilter}>
         <option value="All">All Assets</option>
         {filteredData

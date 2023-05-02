@@ -116,8 +116,8 @@ export function Map() {
   }, [data, selectedDecade]);
 
   return (
-    <div className="map-container">
-      <h3>Select Year</h3>
+    <div>
+      <h3>Select Decade</h3>
       <Slider
         value={selectedDecade}
         onChange={handleSliderChange}
@@ -126,60 +126,63 @@ export function Map() {
         step={10}
         valueLabelDisplay="auto"
       />
-      <LoadScript googleMapsApiKey={process.env.REACT_APP_GOOGLE_KEY}>
-        <GoogleMap
-          mapContainerStyle={mapStyles}
-          zoom={4}
-          center={defaultCenter}
-          onClick={handleMapClick}
-          height="10%"
-        >
-          <MarkerClusterer
-            onLoad={onClustererLoad}
-            averageCenter
-            gridSize={60}
-            zoomOnClick={false}
-            minimumClusterSize={5}
-            maxZoom={15}
+      <div className="map-container">
+      <h3>Risk Map for {selectedDecade}s</h3>
+        <LoadScript googleMapsApiKey={process.env.REACT_APP_GOOGLE_KEY}>
+          <GoogleMap
+            mapContainerStyle={mapStyles}
+            zoom={4}
+            center={defaultCenter}
+            onClick={handleMapClick}
+            height="10%"
           >
-            {(clusterer) =>
-              filteredData.map((asset, index) =>
-                window.google ? (
-                  <Marker
-                    key={`${asset["Asset Name"]}-${index}`} // Concatenate the name with index
-                    position={{
-                      lat: Number(asset.Lat),
-                      lng: Number(asset.Long),
-                    }}
-                    onClick={() => handleMarkerClick(asset)}
-                    icon={{
-                      url: `http://maps.google.com/mapfiles/ms/icons/${getColor(
-                        asset["Risk Rating"]
-                      )}-dot.png`,
-                      scaledSize: new window.google.maps.Size(30, 30),
-                    }}
-                    clusterer={clusterer}
-                    cluster={{
-                      averageRiskRating: getAverageRiskRating,
-                      styles: [
-                        {
-                          textColor: "white",
-                        },
-                      ],
-                    }}
-                  />
-                ) : null
-              )
+            <MarkerClusterer
+              onLoad={onClustererLoad}
+              averageCenter
+              gridSize={60}
+              zoomOnClick={false}
+              minimumClusterSize={5}
+              maxZoom={15}
+            >
+              {(clusterer) =>
+                filteredData.map((asset, index) =>
+                  window.google ? (
+                    <Marker
+                      key={`${asset["Asset Name"]}-${index}`} // Concatenate the name with index
+                      position={{
+                        lat: Number(asset.Lat),
+                        lng: Number(asset.Long),
+                      }}
+                      onClick={() => handleMarkerClick(asset)}
+                      icon={{
+                        url: `http://maps.google.com/mapfiles/ms/icons/${getColor(
+                          asset["Risk Rating"]
+                        )}-dot.png`,
+                        scaledSize: new window.google.maps.Size(30, 30),
+                      }}
+                      clusterer={clusterer}
+                      cluster={{
+                        averageRiskRating: getAverageRiskRating,
+                        styles: [
+                          {
+                            textColor: "white",
+                          },
+                        ],
+                      }}
+                    />
+                  ) : null
+                )
+              }
+            </MarkerClusterer>
+          </GoogleMap>
+          <style jsx>{`
+            .map-container {
+              height: 100vh;
+              width: 100%;
             }
-          </MarkerClusterer>
-        </GoogleMap>
-        <style jsx>{`
-          .map-container {
-            height: 100vh;
-            width: 100%;
-          }
-        `}</style>
-      </LoadScript>
+          `}</style>
+        </LoadScript>
+      </div>
       <Table selectedDecade={selectedDecade} filteredData={filteredData} />
     </div>
   );
