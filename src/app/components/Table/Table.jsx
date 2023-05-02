@@ -95,6 +95,7 @@ export function Table({ selectedDecade, filteredData }) {
             onChange={handleAssetFilter}
             variant="outlined"
             margin="dense"
+            style={{ fontSize: '13px' }}
           >
             <MenuItem value="All">All Asset</MenuItem>
             {filteredData
@@ -113,6 +114,7 @@ export function Table({ selectedDecade, filteredData }) {
             onChange={handleCategoryFilter}
             variant="outlined"
             margin="dense"
+            style={{ fontSize: '13px' }}
           >
             <MenuItem value="All">All Categories</MenuItem>
             {filteredData
