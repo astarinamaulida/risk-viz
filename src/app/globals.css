@@ -57,8 +57,25 @@ body {
   text-align: start;
   padding: 20px;
   margin-left: 20%;
+  margin-top: 50px;
+  margin-bottom: 50px;
 }
 
 .table-container, .map-container {
   margin-top: 40px !important;
+}
+
+.selection {
+  margin-top: 20px;
+  margin-bottom: 20px;
+  display: flex;
+  flex-direction: row;
+  column-gap: 10px;
+}
+
+.pagination {
+  margin-top: 10px;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end
 }
