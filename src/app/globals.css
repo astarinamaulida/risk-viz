@@ -58,3 +58,7 @@ body {
   padding: 20px;
   margin-left: 20%;
 }
+
+.table-container, .map-container {
+  margin-top: 40px !important;
+}
