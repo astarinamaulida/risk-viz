@@ -23,7 +23,7 @@ body {
   height: 100%;
   background-image: url("/sidebar-bg.png");
   background-repeat: no-repeat;
-  position: absolute
+  position: fixed
 }
 
 .sidebar-content {
@@ -78,4 +78,25 @@ body {
   display: flex;
   flex-direction: row;
   justify-content: flex-end
+}
+
+li {
+  list-style-type: none;
+}
+
+a {
+  text-decoration: none;
+  color: white;
+  font-size: 15px;
+  font-weight: 700;
+}
+
+.sidebar-content ul li.active {
+  background-color: black !important;
+  border: 1px solid black !important;
+  color: white;
+}
+
+.sidebar-content ul li:hover {
+  background-color: #f2f2f2;
 }

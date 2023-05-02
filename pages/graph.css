@@ -46,3 +46,24 @@ body {
   padding: 20px;
   margin-left: 20%;
 }
+
+li {
+  list-style-type: none;
+}
+
+a {
+  text-decoration: none;
+  color: white;
+  font-size: 15px;
+  font-weight: 700;
+}
+
+.sidebar-content ul li.active {
+  background-color: black !important;
+  border: 1px solid black !important;
+  color: white;
+}
+
+.sidebar-content ul li:hover {
+  background-color: #f2f2f2;
+}
