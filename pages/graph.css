@@ -47,6 +47,14 @@ body {
   margin-left: 20%;
 }
 
+.selection {
+  margin-top: 20px;
+  margin-bottom: 20px;
+  display: flex;
+  flex-direction: row;
+  column-gap: 10px;
+}
+
 ul {
   padding: 0%;
 }
