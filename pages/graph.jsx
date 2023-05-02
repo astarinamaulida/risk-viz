@@ -3,6 +3,7 @@ import { Chart, registerables } from "chart.js";
 import { Line } from "react-chartjs-2";
 import Papa from "papaparse";
 import { Sidebar } from "@/app/components/Sidebar/Sidebar";
+import { Select, MenuItem, FormControl } from "@material-ui/core";
 import "./graph.css";
 
 Chart.register(...registerables);
@@ -10,9 +11,9 @@ Chart.register(...registerables);
 export default function Graph() {
   const [data, setData] = useState([]);
   const [chartData, setChartData] = useState({});
-  const [location, setLocation] = useState("");
-  const [asset, setAsset] = useState("");
-  const [businessCategory, setBusinessCategory] = useState("");
+  const [location, setLocation] = useState("All");
+  const [asset, setAsset] = useState("All");
+  const [businessCategory, setBusinessCategory] = useState("All");
 
   useEffect(() => {
     let isMounted = true;
@@ -101,59 +102,71 @@ export default function Graph() {
       <Sidebar />
       <div className="graph-container">
         <div className="content-wrapper">
-        <h3>Risk Movement</h3>
+          <h3>Risk Movement</h3>
           <div className="line-chart">
-            <div className="chart-filters">
-              <label htmlFor="location">Location:</label>
-              <select
-                id="location"
-                value={location}
-                onChange={(e) => setLocation(e.target.value)}
-              >
-                <option value="">All</option>
-                {data &&
-                  Array.from(
-                    new Set(data.map((d) => `${d.Lat}-${d.Long}`))
-                  ).map((loc) => (
-                    <option key={loc} value={loc}>
-                      {loc}
-                    </option>
-                  ))}
-              </select>
+            <div className="selection">
+              <FormControl sx={{ m: 1, minWidth: 120 }} size="small">
+                <Select
+                  id="location"
+                  value={location}
+                  onChange={(e) => setLocation(e.target.value)}
+                  variant="outlined"
+                  margin="dense"
+                  style={{ fontSize: '13px' }}
+                >
+                  <MenuItem value="All">Location</MenuItem>
+                  {data &&
+                    Array.from(
+                      new Set(data.map((d) => `${d.Lat}-${d.Long}`))
+                    ).map((loc) => (
+                      <MenuItem key={loc} value={loc}>
+                        {loc}
+                      </MenuItem>
+                    ))}
+                </Select>
+              </FormControl>
 
-              <label htmlFor="asset">Asset Name:</label>
-              <select
-                id="asset"
-                value={asset}
-                onChange={(e) => setAsset(e.target.value)}
-              >
-                <option value="">All</option>
-                {data &&
-                  Array.from(new Set(data.map((d) => d["Asset Name"]))).map(
-                    (name) => (
-                      <option key={name} value={name}>
-                        {name}
-                      </option>
-                    )
-                  )}
-              </select>
+              <FormControl sx={{ m: 1, minWidth: 120 }} size="small">
+                <Select
+                  id="asset"
+                  value={asset}
+                  onChange={(e) => setAsset(e.target.value)}
+                  variant="outlined"
+                  margin="dense"
+                  style={{ fontSize: '13px' }}
+                >
+                  <MenuItem value="All">Asset Name</MenuItem>
+                  {data &&
+                    Array.from(new Set(data.map((d) => d["Asset Name"]))).map(
+                      (name) => (
+                        <MenuItem key={name} value={name}>
+                          {name}
+                        </MenuItem>
+                      )
+                    )}
+                </Select>
+              </FormControl>
 
-              <label htmlFor="business-category">Business Category:</label>
-              <select
-                id="business-category"
-                value={businessCategory}
-                onChange={(e) => setBusinessCategory(e.target.value)}
-              >
-                <option value="">All</option>
-                {data &&
-                  Array.from(
-                    new Set(data.map((d) => d["Business Category"]))
-                  ).map((category) => (
-                    <option key={category} value={category}>
-                      {category}
-                    </option>
-                  ))}
-              </select>
+              <FormControl sx={{ m: 1, minWidth: 120 }} size="small">
+                <Select
+                  id="business-category"
+                  value={businessCategory}
+                  onChange={(e) => setBusinessCategory(e.target.value)}
+                  variant="outlined"
+                  margin="dense"
+                  style={{ fontSize: '13px' }}
+                >
+                  <MenuItem value="All">Business Category</MenuItem>
+                  {data &&
+                    Array.from(
+                      new Set(data.map((d) => d["Business Category"]))
+                    ).map((category) => (
+                      <MenuItem key={category} value={category}>
+                        {category}
+                      </MenuItem>
+                    ))}
+                </Select>
+              </FormControl>
             </div>
             {chartData &&
               chartData.datasets &&

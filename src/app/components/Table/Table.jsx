@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Select, MenuItem, FormControl, InputLabel } from "@material-ui/core";
+import { Select, MenuItem, FormControl } from "@material-ui/core";
 import { FaCaretUp, FaCaretDown } from "react-icons/fa";
 
 export function Table({ selectedDecade, filteredData }) {
