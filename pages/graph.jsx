@@ -99,72 +99,79 @@ export default function Graph() {
   return (
     <div>
       <Sidebar />
-      <div className="line-chart">
-        <div className="chart-filters">
-          <label htmlFor="location">Location:</label>
-          <select
-            id="location"
-            value={location}
-            onChange={(e) => setLocation(e.target.value)}
-          >
-            <option value="">All</option>
-            {data &&
-              Array.from(new Set(data.map((d) => `${d.Lat}-${d.Long}`))).map(
-                (loc) => (
-                  <option key={loc} value={loc}>
-                    {loc}
-                  </option>
-                )
-              )}
-          </select>
+      <div className="graph-container">
+        <div className="content-wrapper">
+        <h3>Risk Movement</h3>
+          <div className="line-chart">
+            <div className="chart-filters">
+              <label htmlFor="location">Location:</label>
+              <select
+                id="location"
+                value={location}
+                onChange={(e) => setLocation(e.target.value)}
+              >
+                <option value="">All</option>
+                {data &&
+                  Array.from(
+                    new Set(data.map((d) => `${d.Lat}-${d.Long}`))
+                  ).map((loc) => (
+                    <option key={loc} value={loc}>
+                      {loc}
+                    </option>
+                  ))}
+              </select>
 
-          <label htmlFor="asset">Asset Name:</label>
-          <select
-            id="asset"
-            value={asset}
-            onChange={(e) => setAsset(e.target.value)}
-          >
-            <option value="">All</option>
-            {data &&
-              Array.from(new Set(data.map((d) => d["Asset Name"]))).map(
-                (name) => (
-                  <option key={name} value={name}>
-                    {name}
-                  </option>
-                )
-              )}
-          </select>
+              <label htmlFor="asset">Asset Name:</label>
+              <select
+                id="asset"
+                value={asset}
+                onChange={(e) => setAsset(e.target.value)}
+              >
+                <option value="">All</option>
+                {data &&
+                  Array.from(new Set(data.map((d) => d["Asset Name"]))).map(
+                    (name) => (
+                      <option key={name} value={name}>
+                        {name}
+                      </option>
+                    )
+                  )}
+              </select>
 
-          <label htmlFor="business-category">Business Category:</label>
-          <select
-            id="business-category"
-            value={businessCategory}
-            onChange={(e) => setBusinessCategory(e.target.value)}
-          >
-            <option value="">All</option>
-            {data &&
-              Array.from(new Set(data.map((d) => d["Business Category"]))).map(
-                (category) => (
-                  <option key={category} value={category}>
-                    {category}
-                  </option>
-                )
+              <label htmlFor="business-category">Business Category:</label>
+              <select
+                id="business-category"
+                value={businessCategory}
+                onChange={(e) => setBusinessCategory(e.target.value)}
+              >
+                <option value="">All</option>
+                {data &&
+                  Array.from(
+                    new Set(data.map((d) => d["Business Category"]))
+                  ).map((category) => (
+                    <option key={category} value={category}>
+                      {category}
+                    </option>
+                  ))}
+              </select>
+            </div>
+            {chartData &&
+              chartData.datasets &&
+              chartData.datasets.length > 0 && (
+                <Line
+                  data={chartData}
+                  options={{
+                    responsive: true,
+                    title: { text: "Risk Rating over time", display: true },
+                    scales: {
+                      xAxes: [{ gridLines: { display: false } }],
+                      yAxes: [{ gridLines: { display: false } }],
+                    },
+                  }}
+                />
               )}
-          </select>
+          </div>
         </div>
-        {chartData && chartData.datasets && chartData.datasets.length > 0 && (
-          <Line
-            data={chartData}
-            options={{
-              responsive: true,
-              title: { text: "Risk Rating over time", display: true },
-              scales: {
-                xAxes: [{ gridLines: { display: false } }],
-                yAxes: [{ gridLines: { display: false } }],
-              },
-            }}
-          />
-        )}
       </div>
     </div>
   );
