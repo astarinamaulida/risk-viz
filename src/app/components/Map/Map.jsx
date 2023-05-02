@@ -9,7 +9,6 @@ import {
 } from "@react-google-maps/api";
 import { MarkerClusterer } from "@react-google-maps/api";
 import { Table } from "../Table/Table";
-import { Graph } from "../Graph/Graph";
 import Slider from "@material-ui/core/Slider";
 import Papa from "papaparse";
 
@@ -182,7 +181,6 @@ export function Map() {
         `}</style>
       </LoadScript>
       <Table selectedDecade={selectedDecade} filteredData={filteredData} />
-      <Graph data={data} />
     </div>
   );
 }
