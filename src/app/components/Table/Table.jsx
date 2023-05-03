@@ -13,6 +13,8 @@ export function Table({ selectedDecade, filteredData }) {
   const [filteredTableData, setFilteredTableData] = useState(tableData);
 
   useEffect(() => {
+    setSelectedAsset("All");
+    setSelectedCategory("All");
     const decadeData = filteredData.filter(
       (asset) =>
         Math.floor(new Date(asset["Year"]).getFullYear() / 10) * 10 ===
@@ -64,18 +66,28 @@ export function Table({ selectedDecade, filteredData }) {
     const selected = event.target.value;
     setSelectedAsset(selected);
     setCurrentPage(1);
-    const filtered = decadeData.filter(
-      (asset) => selected === "All" || asset["Asset Name"] === selected
+    const decadeData = filteredData.filter(
+      (asset) =>
+        Math.floor(new Date(asset["Year"]).getFullYear() / 10) * 10 ===
+          selectedDecade &&
+        (selected === "All" || asset["Asset Name"] === selected) &&
+        (selectedCategory === "All" ||
+          asset["Business Category"] === selectedCategory)
     );
-    setFilteredTableData(filtered);
+    setFilteredTableData(decadeData);
   };
 
   const handleCategoryFilter = (event) => {
     const selected = event.target.value;
     setSelectedCategory(selected);
     setCurrentPage(1);
-    const filtered = decadeData.filter(
-      (asset) => selected === "All" || asset["Business Category"] === selected
+    const filtered = tableData.filter(
+      (asset) =>
+        (Math.floor(new Date(asset["Year"]).getFullYear() / 10) * 10 ===
+          selectedDecade &&
+          selected === "All") ||
+        (asset["Business Category"] === selected &&
+          (selectedAsset === "All" || asset["Asset Name"] === selectedAsset))
     );
     setFilteredTableData(filtered);
   };
