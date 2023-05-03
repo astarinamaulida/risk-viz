@@ -38,13 +38,15 @@ body {
   display: flex;
   background-color: #FFFFFF;
   flex-direction: column;
-  height: 70%;
+  height: 82%;
   width: 65%;
   opacity: 85%;
   border-radius: 5px;
   text-align: start;
   padding: 20px;
   margin-left: 20%;
+  margin-top: 50px;
+  margin-bottom: 50px;
 }
 
 .selection {
