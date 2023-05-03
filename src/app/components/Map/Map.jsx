@@ -27,8 +27,8 @@ export function Map() {
   };
 
   const defaultCenter = {
-    lat: 42.8334,
-    lng: -80.38297,
+    lat: 48.8334,
+    lng: -90.38297,
   };
 
   useEffect(() => {
@@ -115,7 +115,7 @@ export function Map() {
     }
   }, [data, selectedDecade]);
 
-  console.log(process.env.NEXT_PUBLIC_GOOGLE_KEY);
+  const mapId = process.env.NEXT_PUBLIC_MAP_ID;
 
   return (
     <div>
@@ -129,14 +129,20 @@ export function Map() {
         valueLabelDisplay="auto"
       />
       <div className="map-container">
-      <h3>Risk Map for {selectedDecade}s</h3>
+        <h3>Risk Map for {selectedDecade}s</h3>
         <LoadScript googleMapsApiKey={process.env.NEXT_PUBLIC_GOOGLE_KEY}>
           <GoogleMap
             mapContainerStyle={mapStyles}
-            zoom={4}
+            zoom={3.5}
             center={defaultCenter}
             onClick={handleMapClick}
             height="10%"
+            options={{
+              mapId: mapId,
+              mapTypeControl: false,
+              streetViewControl: false,
+              keyboardShortcuts: false,
+            }}
           >
             <MarkerClusterer
               onLoad={onClustererLoad}
@@ -150,40 +156,37 @@ export function Map() {
                 filteredData.map((asset, index) =>
                   window.google ? (
                     <Marker
-                    key={`${asset["Asset Name"]}-${index}`} // Concatenate the name with index
-                    position={{
-                      lat: Number(asset.Lat),
-                      lng: Number(asset.Long),
-                    }}
-                    onClick={() => handleMarkerClick(asset)}
-                    icon={{
-                      url: `http://maps.google.com/mapfiles/ms/icons/${getColor(
-                        asset["Risk Rating"]
-                      )}-dot.png`,
-                      scaledSize: new window.google.maps.Size(30, 30),
-                    }}
-                    clusterer={clusterer}
-                    cluster={{
-                      averageRiskRating: getAverageRiskRating,
-                      styles: [
-                        {
-                          textColor: "white",
-                        },
-                      ],
-                    }}
-                  >
-                    {selectedAsset === asset && (
-                      <InfoWindow
-                        onCloseClick={() => setSelectedAsset(null)}
-                      >
-                        <div>
-                          <p>{asset["Asset Name"]}</p>
-                          <p>{asset["Business Category"]}</p>
-                        </div>
-                      </InfoWindow>
-                    )}
-                  </Marker>
-                  
+                      key={`${asset["Asset Name"]}-${index}`} // Concatenate the name with index
+                      position={{
+                        lat: Number(asset.Lat),
+                        lng: Number(asset.Long),
+                      }}
+                      onClick={() => handleMarkerClick(asset)}
+                      icon={{
+                        url: `http://maps.google.com/mapfiles/ms/icons/${getColor(
+                          asset["Risk Rating"]
+                        )}-dot.png`,
+                        scaledSize: new window.google.maps.Size(30, 30),
+                      }}
+                      clusterer={clusterer}
+                      cluster={{
+                        averageRiskRating: getAverageRiskRating,
+                        styles: [
+                          {
+                            textColor: "white",
+                          },
+                        ],
+                      }}
+                    >
+                      {selectedAsset === asset && (
+                        <InfoWindow onCloseClick={() => setSelectedAsset(null)}>
+                          <div>
+                            <p>{asset["Asset Name"]}</p>
+                            <p>{asset["Business Category"]}</p>
+                          </div>
+                        </InfoWindow>
+                      )}
+                    </Marker>
                   ) : null
                 )
               }
