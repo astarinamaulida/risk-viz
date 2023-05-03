@@ -115,6 +115,8 @@ export function Map() {
     }
   }, [data, selectedDecade]);
 
+  console.log(process.env.NEXT_PUBLIC_GOOGLE_KEY);
+
   return (
     <div>
       <h3>Select Decade</h3>
@@ -128,7 +130,7 @@ export function Map() {
       />
       <div className="map-container">
       <h3>Risk Map for {selectedDecade}s</h3>
-        <LoadScript googleMapsApiKey={process.env.REACT_APP_GOOGLE_KEY}>
+        <LoadScript googleMapsApiKey={process.env.NEXT_PUBLIC_GOOGLE_KEY}>
           <GoogleMap
             mapContainerStyle={mapStyles}
             zoom={4}
@@ -148,28 +150,40 @@ export function Map() {
                 filteredData.map((asset, index) =>
                   window.google ? (
                     <Marker
-                      key={`${asset["Asset Name"]}-${index}`} // Concatenate the name with index
-                      position={{
-                        lat: Number(asset.Lat),
-                        lng: Number(asset.Long),
-                      }}
-                      onClick={() => handleMarkerClick(asset)}
-                      icon={{
-                        url: `http://maps.google.com/mapfiles/ms/icons/${getColor(
-                          asset["Risk Rating"]
-                        )}-dot.png`,
-                        scaledSize: new window.google.maps.Size(30, 30),
-                      }}
-                      clusterer={clusterer}
-                      cluster={{
-                        averageRiskRating: getAverageRiskRating,
-                        styles: [
-                          {
-                            textColor: "white",
-                          },
-                        ],
-                      }}
-                    />
+                    key={`${asset["Asset Name"]}-${index}`} // Concatenate the name with index
+                    position={{
+                      lat: Number(asset.Lat),
+                      lng: Number(asset.Long),
+                    }}
+                    onClick={() => handleMarkerClick(asset)}
+                    icon={{
+                      url: `http://maps.google.com/mapfiles/ms/icons/${getColor(
+                        asset["Risk Rating"]
+                      )}-dot.png`,
+                      scaledSize: new window.google.maps.Size(30, 30),
+                    }}
+                    clusterer={clusterer}
+                    cluster={{
+                      averageRiskRating: getAverageRiskRating,
+                      styles: [
+                        {
+                          textColor: "white",
+                        },
+                      ],
+                    }}
+                  >
+                    {selectedAsset === asset && (
+                      <InfoWindow
+                        onCloseClick={() => setSelectedAsset(null)}
+                      >
+                        <div>
+                          <p>{asset["Asset Name"]}</p>
+                          <p>{asset["Business Category"]}</p>
+                        </div>
+                      </InfoWindow>
+                    )}
+                  </Marker>
+                  
                   ) : null
                 )
               }
