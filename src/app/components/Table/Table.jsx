@@ -10,6 +10,7 @@ export function Table({ selectedDecade, filteredData }) {
   const [selectedCategory, setSelectedCategory] = useState("All");
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(10);
+  const [filteredTableData, setFilteredTableData] = useState(tableData);
 
   useEffect(() => {
     const decadeData = filteredData.filter(
@@ -18,6 +19,7 @@ export function Table({ selectedDecade, filteredData }) {
         selectedDecade
     );
     setTableData(decadeData);
+    setFilteredTableData(decadeData);
   }, [selectedDecade, filteredData]);
 
   const extractWords = (str) => {
@@ -31,7 +33,7 @@ export function Table({ selectedDecade, filteredData }) {
     }
     setSorting({ column, direction });
 
-    const sortedData = [...tableData].sort((a, b) => {
+    const sortedData = filteredTableData.sort((a, b) => {
       if (a[column] < b[column]) {
         return direction === "asc" ? -1 : 1;
       }
@@ -40,7 +42,7 @@ export function Table({ selectedDecade, filteredData }) {
       }
       return 0;
     });
-    setTableData(sortedData);
+    setFilteredTableData(sortedData);
   };
 
   const getSortingDirection = (column) => {
@@ -59,13 +61,23 @@ export function Table({ selectedDecade, filteredData }) {
   };
 
   const handleAssetFilter = (event) => {
-    setSelectedAsset(event.target.value);
+    const selected = event.target.value;
+    setSelectedAsset(selected);
     setCurrentPage(1);
+    const filtered = decadeData.filter(
+      (asset) => selected === "All" || asset["Asset Name"] === selected
+    );
+    setFilteredTableData(filtered);
   };
 
   const handleCategoryFilter = (event) => {
-    setSelectedCategory(event.target.value);
+    const selected = event.target.value;
+    setSelectedCategory(selected);
     setCurrentPage(1);
+    const filtered = decadeData.filter(
+      (asset) => selected === "All" || asset["Business Category"] === selected
+    );
+    setFilteredTableData(filtered);
   };
 
   const decadeData = filteredData.filter(
@@ -79,7 +91,10 @@ export function Table({ selectedDecade, filteredData }) {
 
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-  const currentData = decadeData.slice(indexOfFirstItem, indexOfLastItem);
+  const currentData = filteredTableData.slice(
+    indexOfFirstItem,
+    indexOfLastItem
+  );
 
   const paginate = (pageNumber) => {
     setCurrentPage(pageNumber);
@@ -95,7 +110,7 @@ export function Table({ selectedDecade, filteredData }) {
             onChange={handleAssetFilter}
             variant="outlined"
             margin="dense"
-            style={{ fontSize: '13px' }}
+            style={{ fontSize: "13px" }}
           >
             <MenuItem value="All">All Asset</MenuItem>
             {filteredData
@@ -114,7 +129,7 @@ export function Table({ selectedDecade, filteredData }) {
             onChange={handleCategoryFilter}
             variant="outlined"
             margin="dense"
-            style={{ fontSize: '13px' }}
+            style={{ fontSize: "13px" }}
           >
             <MenuItem value="All">All Categories</MenuItem>
             {filteredData
