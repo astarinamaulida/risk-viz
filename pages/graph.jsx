@@ -39,14 +39,12 @@ export default function Graph() {
 
   useEffect(() => {
     if (!data) return;
-  
+
     const filterData = () => {
       let filteredData = {};
       let selectedData = [];
       if (location !== "All") {
-        selectedData = data.filter(
-          (d) => `${d.Lat}-${d.Long}` === location
-        );
+        selectedData = data.filter((d) => `${d.Lat}-${d.Long}` === location);
       }
       if (asset !== "All") {
         selectedData = data.filter((d) => d["Asset Name"] === asset);
@@ -66,7 +64,7 @@ export default function Graph() {
       }, {});
       return filteredData;
     };
-  
+
     const filteredData = filterData();
     if (!filteredData) return;
     setChartData({
@@ -78,8 +76,10 @@ export default function Graph() {
             .sort()
             .map(
               (year) =>
-                filteredData[year].reduce((acc, cur) => acc + parseInt(cur), 0) /
-                filteredData[year].length
+                filteredData[year].reduce(
+                  (acc, cur) => acc + parseInt(cur),
+                  0
+                ) / filteredData[year].length
             ),
           borderColor: getRandomColor(),
           borderWidth: 2,
@@ -180,8 +180,17 @@ export default function Graph() {
                     responsive: true,
                     title: { text: "Risk Rating over time", display: true },
                     scales: {
-                      xAxes: [{ gridLines: { display: false } }],
-                      yAxes: [{ gridLines: { display: false } }],
+                      x: {
+                        type: "linear",
+                        gridLines: {
+                          display: false,
+                        },
+                      },
+                      y: {
+                        gridLines: {
+                          display: false,
+                        },
+                      },
                     },
                     plugins: {
                       tooltip: {
