@@ -19,7 +19,7 @@ body {
 }
 
 .sidebar {
-  width: 20vw;
+  width: 18vw;
   height: 100%;
   background-image: url("/sidebar-bg.png");
   background-repeat: no-repeat;
@@ -27,7 +27,7 @@ body {
 }
 
 .sidebar-content {
-  width: 20vw;
+  width: 18vw;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -68,6 +68,15 @@ body {
   flex-direction: row;
   column-gap: 10px;
   align-items: center;
+  font-weight: 700;
+}
+
+.selection-slider {
+  margin-top: 20px;
+  margin-bottom: 20px;
+  display: flex;
+  flex-direction: column;
+  column-gap: 10px;
   font-weight: 700;
 }
 
@@ -119,9 +128,10 @@ a {
 .button-menu {
   font-size: 12px;
   font-weight: 700;
-  color: #FFFFFF;
-  border: #F2F2F2;
-  background-color: rgb(66, 68, 78);
+  color: #000000;
+  border: 1px solid #c3d5f1;
+  /* background-color: #888b98; */
+  background-color: #FFFFFF;
   width: 12%;
   height: 40px;
   margin-top: 20px;

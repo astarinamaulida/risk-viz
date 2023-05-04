@@ -9,25 +9,9 @@ export function Sidebar() {
   return (
     <div className="sidebar">
       <div className="sidebar-content">
+      <Link href="/" legacyBehavior>
         <img className="logo" src="./logo.png" alt="logo" />
-        <ul>
-          <li>
-            <Link href="/" legacyBehavior>
-              <a className={router.pathname === "/" ? "active" : ""}>
-                <TbMap2 size={30} />
-                Risk Map &amp; Data
-              </a>
-            </Link>
-          </li>
-          <li>
-            <Link href="/graph" legacyBehavior>
-              <a className={router.pathname === "/graph" ? "active" : ""}>
-                <AiOutlineLineChart size={30} />
-                Risk Movement
-              </a>
-            </Link>
-          </li>
-        </ul>
+        </Link>
       </div>
     </div>
   );

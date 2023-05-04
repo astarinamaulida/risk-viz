@@ -4,13 +4,13 @@ import { FaCaretUp, FaCaretDown } from "react-icons/fa";
 
 export function Table({ selectedDecade, filteredData }) {
   const [tableData, setTableData] = useState([]);
-  const [sorting, setSorting] = useState({ column: null, direction: null });
+  const [currentPage, setCurrentPage] = useState(1);
+  const [itemsPerPage, setItemsPerPage] = useState(10);
   const [hoveredColumn, setHoveredColumn] = useState(null);
   const [selectedAsset, setSelectedAsset] = useState("All");
   const [selectedCategory, setSelectedCategory] = useState("All");
-  const [currentPage, setCurrentPage] = useState(1);
-  const [itemsPerPage, setItemsPerPage] = useState(10);
   const [filteredTableData, setFilteredTableData] = useState(tableData);
+  const [sorting, setSorting] = useState({ column: null, direction: null });
 
   useEffect(() => {
     setSelectedAsset("All");
