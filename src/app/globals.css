@@ -61,10 +61,6 @@ body {
   margin-bottom: 50px;
 }
 
-.table-container, .map-container {
-  margin-top: 40px !important;
-}
-
 .selection {
   margin-top: 20px;
   margin-bottom: 20px;
@@ -118,4 +114,23 @@ a {
   flex-direction: column;
   column-gap: 60px;
   padding: 10px;
+}
+
+.button-menu {
+  font-size: 12px;
+  font-weight: 700;
+  color: #FFFFFF;
+  border: #F2F2F2;
+  background-color: rgb(66, 68, 78);
+  width: 12%;
+  height: 40px;
+  margin-top: 20px;
+  border-radius: 5px 5px 0px 0px;
+}
+
+hr {
+  border: 1px solid #F2F2F2;
+  width: 100%;
+  margin-top: 0%;
+  margin-bottom: 0%;
 }
