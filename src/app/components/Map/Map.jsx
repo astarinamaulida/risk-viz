@@ -136,13 +136,26 @@ export function Map() {
 
   return (
     <div>
-      <button className="button-menu" onClick={handleShowMap}>
+      <button
+        className={`button-menu ${displayComponent === "map" ? "active" : ""}`}
+        onClick={handleShowMap}
+      >
         Risk Map
       </button>
-      <button className="button-menu" onClick={handleShowTable}>
+      <button
+        className={`button-menu ${
+          displayComponent === "table" ? "active" : ""
+        }`}
+        onClick={handleShowTable}
+      >
         Risk Table
       </button>
-      <button className="button-menu" onClick={handleShowGraph}>
+      <button
+        className={`button-menu ${
+          displayComponent === "graph" ? "active" : ""
+        }`}
+        onClick={handleShowGraph}
+      >
         Risk Graph
       </button>
       <hr />
