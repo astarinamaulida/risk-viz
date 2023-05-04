@@ -181,7 +181,6 @@ export default function Graph() {
                     title: { text: "Risk Rating over time", display: true },
                     scales: {
                       x: {
-                        type: "linear",
                         gridLines: {
                           display: false,
                         },
