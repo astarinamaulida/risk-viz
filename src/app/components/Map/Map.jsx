@@ -1,20 +1,30 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Papa from "papaparse";
 import {
   LoadScript,
   GoogleMap,
   Marker,
   InfoWindow,
 } from "@react-google-maps/api";
-import Papa from "papaparse";
+import { Graph } from "../Graph/Graph";
 import { Table } from "../Table/Table";
 import { Box } from "@material-ui/core";
-import Slider from "@material-ui/core/Slider";
-import { styled } from "@material-ui/core";
+import { useRouter } from "next/navigation";
+import { AiOutlineLineChart } from "react-icons/ai";
 import { MarkerClusterer } from "@react-google-maps/api";
+import {
+  marks,
+  getColor,
+  getDecade,
+  mapStyles,
+  CustomSlider,
+  defaultCenter,
+} from "@/app/helper";
 
 export function Map() {
+  const router = useRouter();
   const [data, setData] = useState([]);
   const [decade, setDecade] = useState(2030);
   const [clusterer, setClusterer] = useState(null);
@@ -22,39 +32,6 @@ export function Map() {
   const [selectedAsset, setSelectedAsset] = useState(null);
   const [selectedDecade, setSelectedDecade] = useState(2030);
   const [displayComponent, setDisplayComponent] = useState("map");
-
-  const mapStyles = {
-    height: "60vh",
-    width: "100%",
-  };
-
-  const defaultCenter = {
-    lat: 48.8334,
-    lng: -90.38297,
-  };
-
-  const marks = [
-    {
-      value: 2030,
-      label: 2030,
-    },
-    {
-      value: 2040,
-      label: 2040,
-    },
-    {
-      value: 2050,
-      label: 2050,
-    },
-    {
-      value: 2060,
-      label: 2060,
-    },
-    {
-      value: 2070,
-      label: 2070,
-    },
-  ];
 
   useEffect(() => {
     let isMounted = true;
@@ -96,16 +73,8 @@ export function Map() {
     setDisplayComponent("table");
   };
 
-  const getColor = (riskRating) => {
-    if (riskRating < 0.25) {
-      return "green";
-    } else if (riskRating < 0.5) {
-      return "yellow";
-    } else if (riskRating < 0.75) {
-      return "orange";
-    } else {
-      return "red";
-    }
+  const handleShowGraph = () => {
+    setDisplayComponent("graph");
   };
 
   const getAverageRiskRating = (location) => {
@@ -130,26 +99,9 @@ export function Map() {
     setSelectedDecade(newValue);
   };
 
-  const getDecade = (dateString) => {
-    const year = new Date(dateString).getFullYear();
-    return Math.floor(year / 10) * 10;
-  };
-
   const onClustererLoad = (clusterer) => {
     setClusterer(clusterer);
   };
-
-  const blue = "#94b8d0";
-
-  const CustomSlider = styled(Slider)(({ theme }) => ({
-    color: blue, //color of the slider between thumbs
-    "& .MuiSlider-thumb": {
-      backgroundColor: blue, //color of thumbs
-    },
-    "& .MuiSlider-rail": {
-      color: blue, ////color of the slider outside  teh area between thumbs
-    },
-  }));
 
   useEffect(() => {
     if (data.length > 0) {
@@ -162,11 +114,11 @@ export function Map() {
 
   const mapId = process.env.NEXT_PUBLIC_MAP_ID;
 
-  return (
-    <div>
-      <h3>Select Decade</h3>
+  const slider = (
+    <div className="selection-slider">
+      <label>Select Decade</label>
       <div className="slider-container">
-        <Box sx={{ width: 300 }}>
+        <Box sx={{ width: 200 }}>
           <CustomSlider
             aria-label="Custom marks"
             value={selectedDecade}
@@ -179,11 +131,24 @@ export function Map() {
           />
         </Box>
       </div>
-      <button className="button-menu" onClick={handleShowMap}>Risk Map</button>
-      <button className="button-menu" onClick={handleShowTable}>Risk Table</button>
-      <hr/>
-      {displayComponent === "map" ? (
+    </div>
+  );
+
+  return (
+    <div>
+      <button className="button-menu" onClick={handleShowMap}>
+        Risk Map
+      </button>
+      <button className="button-menu" onClick={handleShowTable}>
+        Risk Table
+      </button>
+      <button className="button-menu" onClick={handleShowGraph}>
+        Risk Graph
+      </button>
+      <hr />
+      {displayComponent === "map" && (
         <div className="map-container">
+          {slider}
           <LoadScript googleMapsApiKey={process.env.NEXT_PUBLIC_GOOGLE_KEY}>
             <GoogleMap
               mapContainerStyle={mapStyles}
@@ -256,9 +221,14 @@ export function Map() {
             `}</style>
           </LoadScript>
         </div>
-      ) : (
-        <Table selectedDecade={selectedDecade} filteredData={filteredData} />
       )}
+      {displayComponent === "table" && (
+        <div>
+          {slider}
+          <Table selectedDecade={selectedDecade} filteredData={filteredData} />
+        </div>
+      )}
+      {displayComponent === "graph" && <Graph data={data} />}
     </div>
   );
 }
