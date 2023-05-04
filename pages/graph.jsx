@@ -39,37 +39,34 @@ export default function Graph() {
 
   useEffect(() => {
     if (!data) return;
-
+  
     const filterData = () => {
       let filteredData = {};
-      if (location) {
-        filteredData = data.reduce((acc, cur) => {
-          if (`${cur.Lat}-${cur.Long}` === location) {
-            acc[cur.Year] = acc[cur.Year] || [];
-            acc[cur.Year].push(cur["Risk Rating"]);
-          }
-          return acc;
-        }, {});
-      } else if (asset) {
-        filteredData = data.reduce((acc, cur) => {
-          if (cur["Asset Name"] === asset) {
-            acc[cur.Year] = acc[cur.Year] || [];
-            acc[cur.Year].push(cur["Risk Rating"]);
-          }
-          return acc;
-        }, {});
-      } else if (businessCategory) {
-        filteredData = data.reduce((acc, cur) => {
-          if (cur["Business Category"] === businessCategory) {
-            acc[cur.Year] = acc[cur.Year] || [];
-            acc[cur.Year].push(cur["Risk Rating"]);
-          }
-          return acc;
-        }, {});
+      let selectedData = [];
+      if (location !== "All") {
+        selectedData = data.filter(
+          (d) => `${d.Lat}-${d.Long}` === location
+        );
       }
+      if (asset !== "All") {
+        selectedData = data.filter((d) => d["Asset Name"] === asset);
+      }
+      if (businessCategory !== "All") {
+        selectedData = data.filter(
+          (d) => d["Business Category"] === businessCategory
+        );
+      }
+      if (location === "All" && asset === "All" && businessCategory === "All") {
+        selectedData = data;
+      }
+      filteredData = selectedData.reduce((acc, cur) => {
+        acc[cur.Year] = acc[cur.Year] || [];
+        acc[cur.Year].push(cur["Risk Rating"]);
+        return acc;
+      }, {});
       return filteredData;
     };
-
+  
     const filteredData = filterData();
     if (!filteredData) return;
     setChartData({
@@ -79,7 +76,11 @@ export default function Graph() {
           label: "Risk Rating",
           data: Object.keys(filteredData)
             .sort()
-            .map((year) => filteredData[year][0]),
+            .map(
+              (year) =>
+                filteredData[year].reduce((acc, cur) => acc + parseInt(cur), 0) /
+                filteredData[year].length
+            ),
           borderColor: getRandomColor(),
           borderWidth: 2,
           fill: false,
@@ -97,6 +98,8 @@ export default function Graph() {
     return color;
   };
 
+  console.log;
+
   return (
     <div>
       <Sidebar />
@@ -112,7 +115,7 @@ export default function Graph() {
                   onChange={(e) => setLocation(e.target.value)}
                   variant="outlined"
                   margin="dense"
-                  style={{ fontSize: '13px' }}
+                  style={{ fontSize: "13px" }}
                 >
                   <MenuItem value="All">Location</MenuItem>
                   {data &&
@@ -133,7 +136,7 @@ export default function Graph() {
                   onChange={(e) => setAsset(e.target.value)}
                   variant="outlined"
                   margin="dense"
-                  style={{ fontSize: '13px' }}
+                  style={{ fontSize: "13px" }}
                 >
                   <MenuItem value="All">Asset Name</MenuItem>
                   {data &&
@@ -154,7 +157,7 @@ export default function Graph() {
                   onChange={(e) => setBusinessCategory(e.target.value)}
                   variant="outlined"
                   margin="dense"
-                  style={{ fontSize: '13px' }}
+                  style={{ fontSize: "13px" }}
                 >
                   <MenuItem value="All">Business Category</MenuItem>
                   {data &&
@@ -179,6 +182,17 @@ export default function Graph() {
                     scales: {
                       xAxes: [{ gridLines: { display: false } }],
                       yAxes: [{ gridLines: { display: false } }],
+                    },
+                    plugins: {
+                      tooltip: {
+                        callbacks: {
+                          label: (tooltipItem) => {
+                            const value = tooltipItem.parsed.y.toFixed(4);
+                            const label = tooltipItem.dataset.label || "";
+                            return `${label}: ${value}`;
+                          },
+                        },
+                      },
                     },
                   }}
                 />
