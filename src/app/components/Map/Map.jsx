@@ -7,10 +7,12 @@ import {
   Marker,
   InfoWindow,
 } from "@react-google-maps/api";
-import { MarkerClusterer } from "@react-google-maps/api";
-import { Table } from "../Table/Table";
-import Slider from "@material-ui/core/Slider";
 import Papa from "papaparse";
+import { Table } from "../Table/Table";
+import { Box } from "@material-ui/core";
+import Slider from "@material-ui/core/Slider";
+import { styled } from "@material-ui/core";
+import { MarkerClusterer } from "@react-google-maps/api";
 
 export function Map() {
   const [data, setData] = useState([]);
@@ -18,7 +20,6 @@ export function Map() {
   const [selectedDecade, setSelectedDecade] = useState(2030);
   const [filteredData, setFilteredData] = useState([]);
   const [clusterer, setClusterer] = useState(null);
-
   const [decade, setDecade] = useState(2030);
 
   const mapStyles = {
@@ -30,6 +31,29 @@ export function Map() {
     lat: 48.8334,
     lng: -90.38297,
   };
+
+  const marks = [
+    {
+      value: 2030,
+      label: 2030,
+    },
+    {
+      value: 2040,
+      label: 2040,
+    },
+    {
+      value: 2050,
+      label: 2050,
+    },
+    {
+      value: 2060,
+      label: 2060,
+    },
+    {
+      value: 2070,
+      label: 2070,
+    },
+  ];
 
   useEffect(() => {
     let isMounted = true;
@@ -106,6 +130,18 @@ export function Map() {
     setClusterer(clusterer);
   };
 
+  const blue = "#94b8d0";
+
+  const CustomSlider = styled(Slider)(({ theme }) => ({
+    color: blue, //color of the slider between thumbs
+    "& .MuiSlider-thumb": {
+      backgroundColor: blue, //color of thumbs
+    },
+    "& .MuiSlider-rail": {
+      color: blue, ////color of the slider outside  teh area between thumbs
+    },
+  }));
+
   useEffect(() => {
     if (data.length > 0) {
       const filteredData = data.filter(
@@ -120,14 +156,20 @@ export function Map() {
   return (
     <div>
       <h3>Select Decade</h3>
-      <Slider
-        value={selectedDecade}
-        onChange={handleSliderChange}
-        min={2030}
-        max={2070}
-        step={10}
-        valueLabelDisplay="auto"
-      />
+      <div className="slider-container">
+        <Box sx={{ width: 300 }}>
+          <CustomSlider
+            aria-label="Custom marks"
+            value={selectedDecade}
+            onChange={handleSliderChange}
+            min={2030}
+            max={2070}
+            step={10}
+            valueLabelDisplay="auto"
+            marks={marks}
+          />
+        </Box>
+      </div>
       <div className="map-container">
         <h3>Risk Map for {selectedDecade}s</h3>
         <LoadScript googleMapsApiKey={process.env.NEXT_PUBLIC_GOOGLE_KEY}>

@@ -111,3 +111,11 @@ a {
   background-color: #28344d;
   opacity: 20%;
 }
+
+.slider-container {
+  display: flex;
+  font-weight: 700;
+  flex-direction: column;
+  column-gap: 60px;
+  padding: 10px;
+}
