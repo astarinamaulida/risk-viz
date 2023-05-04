@@ -16,11 +16,12 @@ import { MarkerClusterer } from "@react-google-maps/api";
 
 export function Map() {
   const [data, setData] = useState([]);
+  const [decade, setDecade] = useState(2030);
+  const [clusterer, setClusterer] = useState(null);
+  const [filteredData, setFilteredData] = useState([]);
   const [selectedAsset, setSelectedAsset] = useState(null);
   const [selectedDecade, setSelectedDecade] = useState(2030);
-  const [filteredData, setFilteredData] = useState([]);
-  const [clusterer, setClusterer] = useState(null);
-  const [decade, setDecade] = useState(2030);
+  const [displayComponent, setDisplayComponent] = useState("map");
 
   const mapStyles = {
     height: "60vh",
@@ -85,6 +86,14 @@ export function Map() {
 
   const handleMapClick = () => {
     setSelectedAsset(null);
+  };
+
+  const handleShowMap = () => {
+    setDisplayComponent("map");
+  };
+
+  const handleShowTable = () => {
+    setDisplayComponent("table");
   };
 
   const getColor = (riskRating) => {
@@ -170,79 +179,86 @@ export function Map() {
           />
         </Box>
       </div>
-      <div className="map-container">
-        <h3>Risk Map for {selectedDecade}s</h3>
-        <LoadScript googleMapsApiKey={process.env.NEXT_PUBLIC_GOOGLE_KEY}>
-          <GoogleMap
-            mapContainerStyle={mapStyles}
-            zoom={3.5}
-            center={defaultCenter}
-            onClick={handleMapClick}
-            height="10%"
-            options={{
-              mapId: mapId,
-              mapTypeControl: false,
-              streetViewControl: false,
-              keyboardShortcuts: false,
-            }}
-          >
-            <MarkerClusterer
-              onLoad={onClustererLoad}
-              averageCenter
-              gridSize={60}
-              zoomOnClick={false}
-              minimumClusterSize={5}
-              maxZoom={15}
+      <button className="button-menu" onClick={handleShowMap}>Risk Map</button>
+      <button className="button-menu" onClick={handleShowTable}>Risk Table</button>
+      <hr/>
+      {displayComponent === "map" ? (
+        <div className="map-container">
+          <LoadScript googleMapsApiKey={process.env.NEXT_PUBLIC_GOOGLE_KEY}>
+            <GoogleMap
+              mapContainerStyle={mapStyles}
+              zoom={3.5}
+              center={defaultCenter}
+              onClick={handleMapClick}
+              height="10%"
+              options={{
+                mapId: mapId,
+                mapTypeControl: false,
+                streetViewControl: false,
+                keyboardShortcuts: false,
+              }}
             >
-              {(clusterer) =>
-                filteredData.map((asset, index) =>
-                  window.google ? (
-                    <Marker
-                      key={`${asset["Asset Name"]}-${index}`} // Concatenate the name with index
-                      position={{
-                        lat: Number(asset.Lat),
-                        lng: Number(asset.Long),
-                      }}
-                      onClick={() => handleMarkerClick(asset)}
-                      icon={{
-                        url: `http://maps.google.com/mapfiles/ms/icons/${getColor(
-                          asset["Risk Rating"]
-                        )}-dot.png`,
-                        scaledSize: new window.google.maps.Size(30, 30),
-                      }}
-                      clusterer={clusterer}
-                      cluster={{
-                        averageRiskRating: getAverageRiskRating,
-                        styles: [
-                          {
-                            textColor: "white",
-                          },
-                        ],
-                      }}
-                    >
-                      {selectedAsset === asset && (
-                        <InfoWindow onCloseClick={() => setSelectedAsset(null)}>
-                          <div>
-                            <p>{asset["Asset Name"]}</p>
-                            <p>{asset["Business Category"]}</p>
-                          </div>
-                        </InfoWindow>
-                      )}
-                    </Marker>
-                  ) : null
-                )
+              <MarkerClusterer
+                onLoad={onClustererLoad}
+                averageCenter
+                gridSize={60}
+                zoomOnClick={false}
+                minimumClusterSize={5}
+                maxZoom={15}
+              >
+                {(clusterer) =>
+                  filteredData.map((asset, index) =>
+                    window.google ? (
+                      <Marker
+                        key={`${asset["Asset Name"]}-${index}`} // Concatenate the name with index
+                        position={{
+                          lat: Number(asset.Lat),
+                          lng: Number(asset.Long),
+                        }}
+                        onClick={() => handleMarkerClick(asset)}
+                        icon={{
+                          url: `http://maps.google.com/mapfiles/ms/icons/${getColor(
+                            asset["Risk Rating"]
+                          )}-dot.png`,
+                          scaledSize: new window.google.maps.Size(30, 30),
+                        }}
+                        clusterer={clusterer}
+                        cluster={{
+                          averageRiskRating: getAverageRiskRating,
+                          styles: [
+                            {
+                              textColor: "white",
+                            },
+                          ],
+                        }}
+                      >
+                        {selectedAsset === asset && (
+                          <InfoWindow
+                            onCloseClick={() => setSelectedAsset(null)}
+                          >
+                            <div>
+                              <p>{asset["Asset Name"]}</p>
+                              <p>{asset["Business Category"]}</p>
+                            </div>
+                          </InfoWindow>
+                        )}
+                      </Marker>
+                    ) : null
+                  )
+                }
+              </MarkerClusterer>
+            </GoogleMap>
+            <style jsx>{`
+              .map-container {
+                height: 100vh;
+                width: 100%;
               }
-            </MarkerClusterer>
-          </GoogleMap>
-          <style jsx>{`
-            .map-container {
-              height: 100vh;
-              width: 100%;
-            }
-          `}</style>
-        </LoadScript>
-      </div>
-      <Table selectedDecade={selectedDecade} filteredData={filteredData} />
+            `}</style>
+          </LoadScript>
+        </div>
+      ) : (
+        <Table selectedDecade={selectedDecade} filteredData={filteredData} />
+      )}
     </div>
   );
 }

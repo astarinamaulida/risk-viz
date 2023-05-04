@@ -114,7 +114,6 @@ export function Table({ selectedDecade, filteredData }) {
 
   return (
     <div className="table-container">
-      <h3>Risk Data for {selectedDecade}s</h3>
       <div className="selection">
         <label>Asset Name</label>
         <FormControl sx={{ m: 1, minWidth: 120 }} size="small">
