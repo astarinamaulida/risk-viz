@@ -116,6 +116,7 @@ export function Table({ selectedDecade, filteredData }) {
     <div className="table-container">
       <h3>Risk Data for {selectedDecade}s</h3>
       <div className="selection">
+        <label>Asset Name</label>
         <FormControl sx={{ m: 1, minWidth: 120 }} size="small">
           <Select
             value={selectedAsset}
@@ -124,7 +125,7 @@ export function Table({ selectedDecade, filteredData }) {
             margin="dense"
             style={{ fontSize: "13px" }}
           >
-            <MenuItem value="All">All Asset</MenuItem>
+            <MenuItem value="All">All</MenuItem>
             {filteredData
               .map((asset) => asset["Asset Name"])
               .filter((value, index, self) => self.indexOf(value) === index)
@@ -135,6 +136,7 @@ export function Table({ selectedDecade, filteredData }) {
               ))}
           </Select>
         </FormControl>
+        <label>Category</label>
         <FormControl sx={{ m: 1, minWidth: 120 }} size="small">
           <Select
             value={selectedCategory}
@@ -143,7 +145,7 @@ export function Table({ selectedDecade, filteredData }) {
             margin="dense"
             style={{ fontSize: "13px" }}
           >
-            <MenuItem value="All">All Categories</MenuItem>
+            <MenuItem value="All">All</MenuItem>
             {filteredData
               .map((asset) => asset["Business Category"])
               .filter((value, index, self) => self.indexOf(value) === index)

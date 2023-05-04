@@ -83,6 +83,7 @@ export default function Graph() {
           <h3>Risk Movement</h3>
           <div className="line-chart">
             <div className="selection">
+            <label>Location</label>
               <FormControl sx={{ m: 1, minWidth: 120 }} size="small">
                 <Select
                   id="location"
@@ -92,7 +93,7 @@ export default function Graph() {
                   margin="dense"
                   style={{ fontSize: "13px" }}
                 >
-                  <MenuItem value="All">Location</MenuItem>
+                  <MenuItem value="All">All</MenuItem>
                   {data &&
                     Array.from(
                       new Set(data.map((d) => `${d.Lat}-${d.Long}`))
@@ -104,6 +105,7 @@ export default function Graph() {
                 </Select>
               </FormControl>
 
+              <label>Asset Name</label>
               <FormControl sx={{ m: 1, minWidth: 120 }} size="small">
                 <Select
                   id="asset"
@@ -113,7 +115,7 @@ export default function Graph() {
                   margin="dense"
                   style={{ fontSize: "13px" }}
                 >
-                  <MenuItem value="All">Asset Name</MenuItem>
+                  <MenuItem value="All">All</MenuItem>
                   {data &&
                     Array.from(new Set(data.map((d) => d["Asset Name"]))).map(
                       (name) => (
@@ -125,6 +127,7 @@ export default function Graph() {
                 </Select>
               </FormControl>
 
+              <label>Business Category</label>
               <FormControl sx={{ m: 1, minWidth: 120 }} size="small">
                 <Select
                   id="business-category"
@@ -134,7 +137,7 @@ export default function Graph() {
                   margin="dense"
                   style={{ fontSize: "13px" }}
                 >
-                  <MenuItem value="All">Business Category</MenuItem>
+                  <MenuItem value="All">All</MenuItem>
                   {data &&
                     Array.from(
                       new Set(data.map((d) => d["Business Category"]))
