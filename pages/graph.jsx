@@ -41,52 +41,38 @@ export default function Graph() {
     if (!data) return;
 
     const filterData = () => {
-      let filteredData = {};
-      let selectedData = [];
+      let selectedData = data;
       if (location !== "All") {
-        selectedData = data.filter((d) => `${d.Lat}-${d.Long}` === location);
+        selectedData = selectedData.filter((d) => `${d.Lat}-${d.Long}` === location);
       }
       if (asset !== "All") {
-        selectedData = data.filter((d) => d["Asset Name"] === asset);
+        selectedData = selectedData.filter((d) => d["Asset Name"] === asset);
       }
       if (businessCategory !== "All") {
-        selectedData = data.filter(
-          (d) => d["Business Category"] === businessCategory
-        );
+        selectedData = selectedData.filter((d) => d["Business Category"] === businessCategory);
       }
-      if (location === "All" && asset === "All" && businessCategory === "All") {
-        selectedData = data;
-      }
-      filteredData = selectedData.reduce((acc, cur) => {
-        acc[cur.Year] = acc[cur.Year] || [];
-        acc[cur.Year].push(cur["Risk Rating"]);
-        return acc;
-      }, {});
-      return filteredData;
+      return selectedData;
     };
 
     const filteredData = filterData();
-    if (!filteredData) return;
-    setChartData({
-      labels: Object.keys(filteredData).sort(),
-      datasets: [
-        {
-          label: "Risk Rating",
-          data: Object.keys(filteredData)
-            .sort()
-            .map(
-              (year) =>
-                filteredData[year].reduce(
-                  (acc, cur) => acc + parseInt(cur),
-                  0
-                ) / filteredData[year].length
-            ),
-          borderColor: getRandomColor(),
-          borderWidth: 2,
-          fill: false,
-        },
-      ],
-    });
+    const groupedData = filteredData.reduce((acc, cur) => {
+      acc[cur.Year] = acc[cur.Year] || [];
+      acc[cur.Year].push(parseFloat(cur["Risk Rating"]));
+      return acc;
+    }, {});
+    const labels = Object.keys(groupedData).sort();
+    const datasets = [
+      {
+        label: "Risk Rating",
+        data: labels.map((year) =>
+          groupedData[year].reduce((acc, cur) => acc + cur, 0) / groupedData[year].length
+        ),
+        borderColor: "#0077be",
+        borderWidth: 2,
+        fill: false,
+      },
+    ];
+    setChartData({ labels, datasets });
   }, [data, location, asset, businessCategory]);
 
   const getRandomColor = () => {
