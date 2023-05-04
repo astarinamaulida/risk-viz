@@ -15,7 +15,7 @@ body {
   width: 100vw;
   height: 100vh;
   margin: 0%;
-  font: 13px/1.5 "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font: 12px/1.5 "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
 
 .sidebar {
@@ -133,6 +133,12 @@ a {
   height: 40px;
   margin-top: 20px;
   border-radius: 5px 5px 0px 0px;
+}
+
+.button-menu.active {
+  background-color: #99a5b2 !important;
+  border: none;
+  color: #fff !important;
 }
 
 hr {
