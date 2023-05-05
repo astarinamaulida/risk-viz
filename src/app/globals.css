@@ -50,13 +50,14 @@ body {
   display: flex;
   background-color: #FFFFFF;
   flex-direction: column;
-  height: 85%;
+  height: 100%;
   width: 72%;
   opacity: 85%;
   border-radius: 5px;
   text-align: start;
   padding: 20px;
   margin-left: 20%;
+  margin-top: 10%;
 }
 
 .selection {
@@ -117,7 +118,6 @@ a {
   flex-direction: row;
   justify-content: flex-start;
   margin-top: 20px;
-  margin-bottom: 20px;
 }
 
 .button-menu {
