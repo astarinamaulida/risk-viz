@@ -99,6 +99,7 @@ export function Map() {
 
   const handleSliderChange = (event, newValue) => {
     setSelectedDecade(newValue);
+    console.log(newValue);
   };
 
   const onClustererLoad = (clusterer) => {
@@ -110,6 +111,7 @@ export function Map() {
       const filteredData = data.filter(
         (asset) => getDecade(asset["Year"]) === selectedDecade
       );
+      console.log(filteredData);
       setFilteredData(filteredData);
     }
   }, [data, selectedDecade]);
@@ -125,10 +127,9 @@ export function Map() {
             aria-label="Custom marks"
             value={selectedDecade}
             onChange={handleSliderChange}
-            min={2030}
-            max={2070}
+            min={2020}
+            max={2060}
             step={10}
-            valueLabelDisplay="auto"
             marks={marks}
           />
         </Box>
@@ -139,31 +140,33 @@ export function Map() {
   return (
     <div>
       <div className="button-wrapper">
-      <button
-        className={`button-menu ${displayComponent === "map" ? "active" : ""}`}
-        onClick={handleShowMap}
-      >
-        <RiMapPinLine size={20} />
-        Risk Map
-      </button>
-      <button
-        className={`button-menu ${
-          displayComponent === "table" ? "active" : ""
-        }`}
-        onClick={handleShowTable}
-      >
-        <RxTable size={20} />
-        Risk Table
-      </button>
-      <button
-        className={`button-menu ${
-          displayComponent === "graph" ? "active" : ""
-        }`}
-        onClick={handleShowGraph}
-      >
-        <AiOutlineLineChart size={20} />
-        Risk Graph
-      </button>
+        <button
+          className={`button-menu ${
+            displayComponent === "map" ? "active" : ""
+          }`}
+          onClick={handleShowMap}
+        >
+          <RiMapPinLine size={20} />
+          Risk Map
+        </button>
+        <button
+          className={`button-menu ${
+            displayComponent === "table" ? "active" : ""
+          }`}
+          onClick={handleShowTable}
+        >
+          <RxTable size={20} />
+          Risk Table
+        </button>
+        <button
+          className={`button-menu ${
+            displayComponent === "graph" ? "active" : ""
+          }`}
+          onClick={handleShowGraph}
+        >
+          <AiOutlineLineChart size={20} />
+          Risk Graph
+        </button>
       </div>
       <hr />
       {displayComponent === "map" && (

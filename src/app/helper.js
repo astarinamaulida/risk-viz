@@ -13,23 +13,23 @@ export const defaultCenter = {
 
 export const marks = [
   {
-    value: 2030,
+    value: 2020,
     label: 2030,
   },
   {
-    value: 2040,
+    value: 2030,
     label: 2040,
   },
   {
-    value: 2050,
+    value: 2040,
     label: 2050,
   },
   {
-    value: 2060,
+    value: 2050,
     label: 2060,
   },
   {
-    value: 2070,
+    value: 2060,
     label: 2070,
   },
 ];
@@ -60,7 +60,7 @@ export const CustomSlider = styled(Slider)(({ theme }) => ({
 
 export const getDecade = (dateString) => {
   const year = new Date(dateString).getFullYear();
-  return Math.floor(year / 10) * 10;
+  return (Math.floor(year / 10) * 10);
 };
 
 export const options = () => ({
