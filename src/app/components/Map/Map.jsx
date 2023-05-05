@@ -12,6 +12,8 @@ import { Graph } from "../Graph/Graph";
 import { Table } from "../Table/Table";
 import { Box } from "@material-ui/core";
 import { useRouter } from "next/navigation";
+import { RxTable } from "react-icons/rx";
+import { RiMapPinLine } from "react-icons/ri";
 import { AiOutlineLineChart } from "react-icons/ai";
 import { MarkerClusterer } from "@react-google-maps/api";
 import {
@@ -136,10 +138,12 @@ export function Map() {
 
   return (
     <div>
+      <div className="button-wrapper">
       <button
         className={`button-menu ${displayComponent === "map" ? "active" : ""}`}
         onClick={handleShowMap}
       >
+        <RiMapPinLine size={20} />
         Risk Map
       </button>
       <button
@@ -148,6 +152,7 @@ export function Map() {
         }`}
         onClick={handleShowTable}
       >
+        <RxTable size={20} />
         Risk Table
       </button>
       <button
@@ -156,8 +161,10 @@ export function Map() {
         }`}
         onClick={handleShowGraph}
       >
+        <AiOutlineLineChart size={20} />
         Risk Graph
       </button>
+      </div>
       <hr />
       {displayComponent === "map" && (
         <div className="map-container">
