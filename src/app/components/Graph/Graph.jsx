@@ -60,7 +60,7 @@ export function Graph({ data }) {
     <div>
       <div className="line-chart">
         <div className="selection">
-          <label>Location</label>
+          <label>Location (Latitude--Longitude)</label>
           <FormControl sx={{ m: 1, minWidth: 120 }} size="small">
             <Select
               id="location"
