@@ -190,6 +190,22 @@ export function Table({ selectedDecade, filteredData }) {
               {getSortingDirection("Asset Name")}
             </th>
             <th
+              onClick={() => sortTable("Lat")}
+              onMouseEnter={() => handleMouseEnter("Lat")}
+              onMouseLeave={() => handleMouseLeave()}
+            >
+              Lat {hoveredColumn === "Lat" && <FaCaretDown />}
+              {getSortingDirection("Lat")}
+            </th>
+            <th
+              onClick={() => sortTable("Long")}
+              onMouseEnter={() => handleMouseEnter("Long")}
+              onMouseLeave={() => handleMouseLeave()}
+            >
+              Lat {hoveredColumn === "Long" && <FaCaretDown />}
+              {getSortingDirection("Long")}
+            </th>
+            <th
               onClick={() => sortTable("Business Category")}
               onMouseEnter={() => handleMouseEnter("Business Category")}
               onMouseLeave={() => handleMouseLeave()}
@@ -220,6 +236,8 @@ export function Table({ selectedDecade, filteredData }) {
           {currentData.map((asset, index) => (
             <tr key={`${asset["Asset Name"]}-${index}`}>
               <td>{asset["Asset Name"]}</td>
+              <td>{asset["Lat"]}</td>
+              <td>{asset["Long"]}</td>
               <td>{asset["Business Category"]}</td>
               <td style={riskRatingCellStyle(asset["Risk Rating"])}>
                 {asset["Risk Rating"]}
