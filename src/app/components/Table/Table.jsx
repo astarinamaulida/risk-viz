@@ -195,14 +195,6 @@ export function Table({ selectedDecade, filteredData }) {
               Risk Factors {hoveredColumn === "Risk Factors" && <FaCaretDown />}
               {getSortingDirection("Risk Factors")}
             </th>
-            <th
-              onClick={() => sortTable("Year")}
-              onMouseEnter={() => handleMouseEnter("Year")}
-              onMouseLeave={() => handleMouseLeave()}
-            >
-              Year {hoveredColumn === "Year" && <FaCaretDown />}
-              {getSortingDirection("Year")}
-            </th>
           </tr>
         </thead>
         <tbody>
@@ -212,7 +204,6 @@ export function Table({ selectedDecade, filteredData }) {
               <td>{asset["Business Category"]}</td>
               <td>{asset["Risk Rating"]}</td>
               <td>{extractWords(asset["Risk Factors"])}</td>
-              <td>{asset["Year"]}</td>
             </tr>
           ))}
         </tbody>
