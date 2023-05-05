@@ -25,7 +25,10 @@ export function Table({ selectedDecade, filteredData }) {
   }, [selectedDecade, filteredData]);
 
   const extractWords = (str) => {
-    return str.replace(/[^a-zA-Z ]/g, "").replace(/\s+(?!$)/g, ", ");
+    return str
+      .replace(/[^a-zA-Z0-9:. ]/g, "")
+      .replace(/(?<!\d)\s*,\s*|\s+(?!$)/g, " ")
+      .replace(/(\d+)\s/g, "$1, ");
   };
 
   const sortTable = (column) => {
