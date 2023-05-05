@@ -57,8 +57,6 @@ export function Map() {
     };
   }, []);
 
-  console.log(data);
-
   const handleMarkerClick = (asset) => {
     setSelectedAsset(asset);
   };
@@ -110,7 +108,6 @@ export function Map() {
       const filteredData = data.filter(
         (asset) => getDecade(asset["Year"]) === selectedDecade
       );
-      console.log(filteredData);
       setFilteredData(filteredData);
     }
   }, [data, selectedDecade]);
