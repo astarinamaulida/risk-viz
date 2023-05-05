@@ -21,7 +21,7 @@ body {
 .sidebar {
   width: 18vw;
   height: 100%;
-  background-image: url("/sidebar-bg.png");
+  background-image: url("/sidebar-bg1.png");
   background-repeat: no-repeat;
   position: fixed
 }
