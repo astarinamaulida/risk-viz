@@ -65,6 +65,16 @@ export function Table({ selectedDecade, filteredData }) {
     setHoveredColumn(null);
   };
 
+  const getRiskRatingColor = (riskRating) => {
+    if (riskRating < 0.33) {
+      return "green";
+    } else if (riskRating < 0.66 > 0.33) {
+      return "orange";
+    } else {
+      return "red";
+    }
+  };
+
   const handleAssetFilter = (event) => {
     const selected = event.target.value;
     setSelectedAsset(selected);
@@ -113,6 +123,12 @@ export function Table({ selectedDecade, filteredData }) {
 
   const paginate = (pageNumber) => {
     setCurrentPage(pageNumber);
+  };
+
+  const riskRatingCellStyle = (riskRating) => {
+    return {
+      color: getRiskRatingColor(riskRating),
+    };
   };
 
   return (
@@ -205,7 +221,9 @@ export function Table({ selectedDecade, filteredData }) {
             <tr key={`${asset["Asset Name"]}-${index}`}>
               <td>{asset["Asset Name"]}</td>
               <td>{asset["Business Category"]}</td>
-              <td>{asset["Risk Rating"]}</td>
+              <td style={riskRatingCellStyle(asset["Risk Rating"])}>
+                {asset["Risk Rating"]}
+              </td>
               <td>{extractWords(asset["Risk Factors"])}</td>
             </tr>
           ))}
