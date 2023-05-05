@@ -72,13 +72,13 @@ export function Graph({ data }) {
             >
               <MenuItem value="All">All</MenuItem>
               {data &&
-                Array.from(new Set(data.map((d) => `${d.Lat}-${d.Long}`))).map(
-                  (loc) => (
+                Array.from(new Set(data.map((d) => `${d.Lat}-${d.Long}`)))
+                  .sort()
+                  .map((loc) => (
                     <MenuItem key={loc} value={loc}>
                       {loc}
                     </MenuItem>
-                  )
-                )}
+                  ))}
             </Select>
           </FormControl>
 
@@ -94,13 +94,13 @@ export function Graph({ data }) {
             >
               <MenuItem value="All">All</MenuItem>
               {data &&
-                Array.from(new Set(data.map((d) => d["Asset Name"]))).map(
-                  (name) => (
+                Array.from(new Set(data.map((d) => d["Asset Name"])))
+                  .sort()
+                  .map((name) => (
                     <MenuItem key={name} value={name}>
                       {name}
                     </MenuItem>
-                  )
-                )}
+                  ))}
             </Select>
           </FormControl>
 
@@ -116,21 +116,18 @@ export function Graph({ data }) {
             >
               <MenuItem value="All">All</MenuItem>
               {data &&
-                Array.from(
-                  new Set(data.map((d) => d["Business Category"]))
-                ).map((category) => (
-                  <MenuItem key={category} value={category}>
-                    {category}
-                  </MenuItem>
-                ))}
+                Array.from(new Set(data.map((d) => d["Business Category"])))
+                  .sort()
+                  .map((category) => (
+                    <MenuItem key={category} value={category}>
+                      {category}
+                    </MenuItem>
+                  ))}
             </Select>
           </FormControl>
         </div>
         {chartData && chartData.datasets && chartData.datasets.length > 0 && (
-          <Line
-            data={chartData}
-            options={options}
-          />
+          <Line data={chartData} options={options} />
         )}
       </div>
     </div>

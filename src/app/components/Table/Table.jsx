@@ -128,6 +128,7 @@ export function Table({ selectedDecade, filteredData }) {
             {filteredData
               .map((asset) => asset["Asset Name"])
               .filter((value, index, self) => self.indexOf(value) === index)
+              .sort((a, b) => a.localeCompare(b))
               .map((asset) => (
                 <MenuItem key={asset} value={asset}>
                   {asset}
@@ -148,6 +149,7 @@ export function Table({ selectedDecade, filteredData }) {
             {filteredData
               .map((asset) => asset["Business Category"])
               .filter((value, index, self) => self.indexOf(value) === index)
+              .sort((a, b) => a.localeCompare(b))
               .map((category) => (
                 <MenuItem key={category} value={category}>
                   {category}
