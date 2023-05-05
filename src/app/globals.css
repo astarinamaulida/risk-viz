@@ -21,7 +21,7 @@ body {
 .sidebar {
   width: 18vw;
   height: 100%;
-  background-image: url("/sidebar-bg1.png");
+  background-image: url("/sidebar-bg.png");
   background-repeat: no-repeat;
   position: fixed
 }
@@ -112,6 +112,14 @@ a {
   padding: 10px;
 }
 
+.button-wrapper {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
 .button-menu {
   font-size: 12px;
   font-weight: 700;
@@ -122,6 +130,9 @@ a {
   height: 40px;
   margin-top: 20px;
   border-radius: 5px 5px 0px 0px;
+  display: flex;
+  align-items: center;
+  column-gap: 5px;
 }
 
 .button-menu.active {

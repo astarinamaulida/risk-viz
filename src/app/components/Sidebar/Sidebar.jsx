@@ -1,7 +1,5 @@
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { TbMap2 } from "react-icons/tb";
-import { AiOutlineLineChart } from "react-icons/ai";
 
 export function Sidebar() {
   const router = useRouter();
